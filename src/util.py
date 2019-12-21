@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import math
 import src.const as const
+import difflib
 
 
 # 是否列表有相同数据
@@ -40,5 +41,10 @@ def calc_best_march_duration(start, location_list, speed):
     return duration_list
 
 
+# 判断两字符是否相似
+def is_similar(str1, str2):
+    return difflib.SequenceMatcher(None, str1, str2).quick_ratio() >= 0.01
+
+
 if __name__ == '__main__':
-    print(calc_march_duration((1, 1), (4, 5), 118))
+    print(is_similar("太史慈", "太史"))

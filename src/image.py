@@ -112,6 +112,14 @@ def get_text_by_orc(hwnd, rect, threshold):
     return pytesseract.image_to_string(image, lang='chi_sim', config='--psm 7')
 
 
+# 获取指定区域内的文字内容：中文内容，一列
+def get_column_text_by_orc(hwnd, rect, threshold):
+    # 截图
+    image = image_grab_clear(hwnd, rect, threshold=threshold)
+    # 图片识别
+    return pytesseract.image_to_string(image, lang='chi_sim', config='--psm 6')
+
+
 # 获取指定区域内的数字内容
 def get_number_by_orc(hwnd, rect, threshold):
     # 截图

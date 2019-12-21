@@ -6,6 +6,7 @@ import src.s3_position as position
 import src.time as time
 import src.user_input as user_input
 import src.window as window
+import src.const as const
 
 
 def click(hwnd, rect):
@@ -61,15 +62,27 @@ def click_expedition_army(hwnd, army_index):
     time.sleep(1)
 
 
+# 点击出征队伍头像（双数）
+def click_expedition_army_even(hwnd, army_index):
+    mouse.click(hwnd, position.expedition_army_even_rect_list[army_index])
+    time.sleep(1)
+
+
 # 点击武将队伍大营
-def click_army_camp(hwnd):
-    mouse.click(hwnd, position.army_hero_camp_rect)
+def click_army_hero(hwnd, hero_index):
+    mouse.click(hwnd, position.army_hero_rect_list[hero_index])
     time.sleep(0.5)
 
 
 # 点击出征按钮
 def click_wipe_out_button(hwnd):
     mouse.click(hwnd, position.wipe_out_button_rect)
+    time.sleep(1)
+
+
+# 点击强行出征
+def click_hero_force_expedition(hwnd):
+    mouse.click(hwnd, position.hero_force_expedition_rect)
     time.sleep(1)
 
 
@@ -178,7 +191,7 @@ def map_reduction(hwnd):
 
 # 滚动一页 TODO 放配置文件
 def scroll_one_page(hwnd):
-    mouse.press_move(hwnd, (300, 760 - window.top_space), (300, 760 - window.top_space - 581))
+    mouse.press_move_point(hwnd, (300, 760 - window.top_space), (300, 760 - window.top_space - 581))
 
 
 # 重置土地统计选项
@@ -199,3 +212,83 @@ def click_interior_menu(hwnd):
 def click_interior_detail_menu(hwnd):
     mouse.click(hwnd, position.interior_detail_menu_rect)
     time.sleep(1)
+
+
+# 点击武将队伍配置
+def click_army_setting_menu(hwnd):
+    mouse.click(hwnd, position.army_setting_menu_rect)
+    time.sleep(1)
+
+
+# 点击武将选择里的第（index + 1）个武将
+def click_hero_select(hwnd, index):
+    mouse.click(hwnd, position.hero_select_rect_list[index])
+    time.sleep(1)
+
+
+# 武将筛选按钮
+def click_hero_screen_button(hwnd):
+    mouse.click(hwnd, position.hero_screen_button_rect)
+    time.sleep(1)
+
+
+# 武将筛选星级重置
+def click_hero_screen_star_reset(hwnd):
+    mouse.click(hwnd, position.hero_screen_star_reset_rect)
+    time.sleep(1)
+
+
+# 武将筛选兵种重置
+def click_hero_screen_arms_reset(hwnd):
+    mouse.click(hwnd, position.hero_screen_arms_reset_rect)
+    time.sleep(1)
+
+
+# 武将筛选阵营重置
+def click_hero_screen_camp_reset(hwnd):
+    mouse.click(hwnd, position.hero_screen_camp_reset_rect)
+    time.sleep(1)
+
+
+# 武将筛选星级
+def click_hero_screen_star_item(hwnd, star):
+    mouse.click(hwnd, position.hero_screen_star_item_rect_list[const.hero_dict[star]])
+    time.sleep(1)
+
+
+# 武将筛选兵种
+def click_hero_screen_arms_item(hwnd, arms):
+    mouse.click(hwnd, position.hero_screen_arms_item_rect_list[const.hero_dict[arms]])
+    time.sleep(1)
+
+
+# 武将筛选阵营
+def click_hero_screen_camp_item(hwnd, camp):
+    mouse.click(hwnd, position.hero_screen_camp_item_rect_list[const.hero_dict[camp]])
+    time.sleep(1)
+
+
+# 武将筛选重置
+def click_hero_screen_reset(hwnd):
+    click_hero_screen_star_reset(hwnd)
+    click_hero_screen_arms_reset(hwnd)
+    click_hero_screen_camp_reset(hwnd)
+
+
+# 武将筛选
+def click_hero_screen_item(hwnd, star, arms, camp):
+    click_hero_screen_star_item(hwnd, star)
+    click_hero_screen_arms_item(hwnd, arms)
+    click_hero_screen_camp_item(hwnd, camp)
+
+
+# 武将拖拽放置
+def drag_hero_placeholder(hwnd, index, target_index):
+    mouse.press_move(hwnd, position.hero_select_rect_list[index], position.army_hero_raise_rect_list[target_index])
+    time.sleep(2)
+
+
+# 武将拖拽下架
+def drag_hero_down(hwnd, index):
+    mouse.press_move(hwnd, position.army_hero_raise_rect_list[index], position.hero_select_rect_list[0])
+    time.sleep(2)

@@ -34,10 +34,33 @@ def click(hwnd, rect):
 
 
 # 按住移动
-def press_move(hwnd, start, end):
+def press_move_point(hwnd, start, end):
     win32api.SendMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, win32api.MAKELONG(start[0], start[1]))
-    i = start[1]
-    while i >= end[1]:
-        win32api.SendMessage(hwnd, win32con.WM_MOUSEMOVE, win32con.MKF_MOUSEMODE, win32api.MAKELONG(start[0], i))
-        i -= 1
-    win32api.SendMessage(hwnd, win32con.WM_LBUTTONUP, win32con.MK_LBUTTON, win32api.MAKELONG(start[0], start[1]))
+    # 向上移动
+    j = start[1]
+    if start[1] > end[1]:
+        while j >= end[1]:
+            win32api.SendMessage(hwnd, win32con.WM_MOUSEMOVE, win32con.MKF_MOUSEMODE, win32api.MAKELONG(start[0], j))
+            j -= 1
+    else:
+        while j <= end[1]:
+            win32api.SendMessage(hwnd, win32con.WM_MOUSEMOVE, win32con.MKF_MOUSEMODE, win32api.MAKELONG(start[0], j))
+            j += 1
+    # 水平移动
+    i = start[0]
+    if start[0] > end[0]:
+        while i >= end[0]:
+            win32api.SendMessage(hwnd, win32con.WM_MOUSEMOVE, win32con.MKF_MOUSEMODE, win32api.MAKELONG(i, j))
+            i -= 1
+    else:
+        while i <= end[0]:
+            win32api.SendMessage(hwnd, win32con.WM_MOUSEMOVE, win32con.MKF_MOUSEMODE, win32api.MAKELONG(i, j))
+            i += 1
+    win32api.SendMessage(hwnd, win32con.WM_LBUTTONUP, win32con.MK_LBUTTON, win32api.MAKELONG(i, j))
+
+
+# 按住移动
+def press_move(hwnd, start_rect, end_rect):
+    start = position_util.point(start_rect)
+    end = position_util.point(end_rect)
+    press_move_point(hwnd, start, end)

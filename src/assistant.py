@@ -4,6 +4,7 @@ import src.image as image
 import src.position_util as position_util
 import src.s3_position as position
 import src.string_util as string_util
+import src.util as util
 
 
 # 城池的武将是否是灰色状态（调动的）
@@ -15,6 +16,12 @@ def is_city_hero_gray(hwnd, hero_index):
 def is_expedition_hero_gray(hwnd, hero_index):
     return image.is_gray_map(
         image.image_grab(hwnd, position_util.top_right(position.expedition_army_rect_list[hero_index])))
+
+
+# 出征的武将是否是灰色状态（调动的）(双数)
+def is_expedition_hero_even_gray(hwnd, hero_index):
+    return image.is_gray_map(
+        image.image_grab(hwnd, position_util.top_right(position.expedition_army_even_rect_list[hero_index])))
 
 
 # 城池的武将是否征兵中（状态判断）
@@ -59,6 +66,13 @@ def is_conscription_tip(hwnd):
     return image.get_text_by_orc(hwnd, position.conscription_tip_rect, 120).find(
         "预备兵") >= 0 or image.get_text_by_orc(hwnd, position.conscription_tip_rect, 120).find(
         "兵力") >= 0
+
+
+# 征兵队列已满
+def is_setting_tip(hwnd):
+    text = image.get_text_by_orc(hwnd, position.conscription_tip_rect, 120)
+    print(text + "================================")
+    return util.is_similar(text, '当前部队处于非待命状态')
 
 
 # 是否是五级地
@@ -172,3 +186,8 @@ def get_march_duration(hwnd):
                                       whitelist='0123456789:')
     duration = string_util.get_time_by_string(text)
     return duration
+
+
+# 获取武将名称
+def get_hero_name(hwnd):
+    return image.get_column_text_by_orc(hwnd, position.hero_name_rect, 120).replace(" ", "").replace("\n", "")
