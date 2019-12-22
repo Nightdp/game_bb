@@ -95,7 +95,7 @@ def click_page_close(hwnd):
 # 点击页面返回按钮
 def click_page_return(hwnd):
     mouse.click(hwnd, position.page_return_rect)
-    time.sleep(2)
+    time.sleep(3)
 
 
 # 点击征兵中心按钮

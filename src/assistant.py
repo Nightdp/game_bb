@@ -26,8 +26,8 @@ def is_expedition_hero_even_gray(hwnd, hero_index):
 
 # 城池的武将是否征兵中（状态判断）
 def is_city_hero_conscription(hwnd, hero_index):
-    return image.get_text_by_orc(hwnd, position_util.hero_status(position.city_army_list[hero_index]), 180).find(
-        "征") >= 0
+    return image.is_image_similar(hwnd, '../res/conscription.png',
+                                  position_util.hero_status(position.city_army_list[hero_index])) > 0.85
 
 
 # 获取武将队伍页面的兵力
@@ -65,13 +65,13 @@ def is_conscription_disable(hwnd):
 def is_conscription_tip(hwnd):
     return image.get_text_by_orc(hwnd, position.conscription_tip_rect, 120).find(
         "预备兵") >= 0 or image.get_text_by_orc(hwnd, position.conscription_tip_rect, 120).find(
-        "兵力") >= 0
+        "兵力") >= 0 or image.get_text_by_orc(hwnd, position.conscription_tip_rect, 120).find(
+        "征兵") >= 0
 
 
-# 征兵队列已满
+# 当前部队处于非待命状态
 def is_setting_tip(hwnd):
     text = image.get_text_by_orc(hwnd, position.conscription_tip_rect, 120)
-    print(text + "================================")
     return util.is_similar(text, '当前部队处于非待命状态')
 
 

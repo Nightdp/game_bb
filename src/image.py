@@ -145,9 +145,9 @@ def get_number_tuple_by_orc(hwnd, rect, threshold, split):
 
 
 # 图片是否相似，传入图片和截图位置
-def is_image_similar(hwnd, image_l, rect):
+def is_image_similar(hwnd, image_path, rect):
+    image_l = Image.open(image_path)
     image_r = image_grab(hwnd, rect)
-    image_r.save('../res/land_5_rect.png')
     return image_similar.calc_image_similarity(image_l.convert('L'), image_r.convert('L'))
 
 

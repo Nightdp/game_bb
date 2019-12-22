@@ -4,6 +4,7 @@ import src.assistant as assistant
 import src.event as event
 import src.s3_config as config
 import src.time as time
+import src.util as util
 
 
 # 扫荡模块
@@ -197,7 +198,57 @@ class WipeOut(object):
         print("返回上一页")
         event.click_page_return(self.hwnd)
 
+        # 获取坐标列表
+
+    def get_location_list(self):
+        location_list = set()
+        while True:
+            item_list = assistant.get_one_page_land_location_list(self.hwnd)
+            before_count = len(location_list) + len(item_list)
+            location_list.update(item_list)
+            after_count = len(location_list)
+            # 比较是否有重复的有就认为是到底了
+            if before_count < 8 or before_count != after_count:
+                break
+            time.sleep(1)
+            event.scroll_one_page(self.hwnd)
+        return location_list
+
+    # 根据土地等级获取可出征列表
+    def init_wipe_out_land_by_level(self, level):
+        event.click_interior_detail_menu(self.hwnd)
+        print("重置土地统计选项")
+        event.reset_land_option(self.hwnd)
+        print("选择图地选项")
+        event.click(self.hwnd, assistant.get_land_option_rect(self.hwnd, level))
+        print("获取所有土地坐标")
+        location_list = self.get_location_list()
+        print("筛选合适的土地出征列表")
+        wipe_out_land_list = util.calc_best_march_duration((201, 1442), location_list, 118)
+        print("移除最后一个")
+        wipe_out_land_list.pop(len(wipe_out_land_list) - 1)
+        print(wipe_out_land_list)
+        config.wipe_out_location_dict['manor_%d' % level] = wipe_out_land_list
+
+    # 初始化扫荡信息
+    def init_wipe_out_land_info(self):
+        print("打开内政页面")
+        event.click_interior_menu(self.hwnd)
+        print("打开内政详情页面")
+        event.click_interior_detail_menu(self.hwnd)
+        print("重置土地统计选项")
+        event.reset_land_option(self.hwnd)
+
+        self.init_wipe_out_land_by_level(6)
+        self.init_wipe_out_land_by_level(5)
+
+        print("返回上一页")
+        event.click_page_close(self.hwnd)
+        print("返回上一页")
+        event.click_page_return(self.hwnd)
+
     def run(self):
+
         # self.init_wipe_out_land_info()
 
         while True:
@@ -208,4 +259,6 @@ class WipeOut(object):
 
             for index in range(0, 5):
                 self.hero_wipe_out_analysis(index, self.army_troops_list[index])
+
+            print("睡眠7分钟")
             time.sleep(20)
