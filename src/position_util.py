@@ -26,3 +26,8 @@ def hero_status(rect):
 # 条目位置
 def land_option(rect, height, index):
     return rect[0], rect[1] + height * index, rect[2], rect[3] + height * index
+
+
+# 耗时
+def time_consuming(rect):
+    return rect[0] + 4, rect[1] + 52, rect[0] + 86, rect[1] + 74

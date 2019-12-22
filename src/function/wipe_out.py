@@ -251,11 +251,6 @@ class WipeOut(object):
 
         # self.init_wipe_out_land_info()
 
-        for i in range(0, 5):
-
-            if not assistant.is_city_army_enable_conscription(self.hwnd, i):
-                print("武将不可征兵状态")
-
         while True:
             # 征兵
             self.conscription()
