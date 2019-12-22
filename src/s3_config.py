@@ -28,4 +28,7 @@ leveling_hero_dict = [('何进', '3星', '骑', '汉'),
 help_hero = ('军士', '1星', '弓', '蜀')
 
 # 撞地土地
-leveling_land = (146, 1302)
+leveling_land_help = (141, 1301)
+
+# 撞地土地
+leveling_land = (144, 1303)

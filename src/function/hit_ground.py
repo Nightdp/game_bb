@@ -80,7 +80,7 @@ class HitGround(object):
             print("体力：" + str(physical))
             print("返回上一页")
             event.click_page_close(self.hwnd)
-            if util.is_similar(hero_name, hero[0]) and physical >= 80:
+            if util.is_similar(hero_name, hero[0]) and physical >= 10:
                 print("放置武将")
                 event.drag_hero_placeholder(self.hwnd, try_index, index)
                 break
@@ -107,7 +107,7 @@ class HitGround(object):
         click_setting = False
         print("获取武将体力信息")
         self.init_army_hero_info(army_index)
-        if self.hero_physical_list[0] < 120:
+        if self.hero_physical_list[0] < 10:
             print("点击武将配置按钮")
             event.click_army_setting_menu(self.hwnd)
             if assistant.is_setting_tip(self.hwnd):
@@ -125,7 +125,7 @@ class HitGround(object):
             else:
                 self.hero_placeholder(config.leveling_hero_dict[self.leveling_hero_index], 1, True)
                 self.leveling_hero_index = (self.leveling_hero_index + 1) % len(config.leveling_hero_dict)
-        if self.hero_physical_list[1] < 120:
+        if self.hero_physical_list[1] < 10:
             print("放置第二个武将")
             if not click_setting:
                 print("点击武将配置按钮")
@@ -148,8 +148,11 @@ class HitGround(object):
 
         print("循环判断和替换")
         for index in range(1, 3):
-            # 把撞地协助武将放置在第一个
-            self.tired_hero_replace_single(index, index == 1)
+            print("判断是否能配置武将状态")
+            if assistant.is_city_army_enable_setting(self.hwnd, index):
+                self.tired_hero_replace_single(index, index == 1)
+            else:
+                print("武将队伍不能配置状态")
 
         print("返回上一页")
         event.click_page_return(self.hwnd)
@@ -157,7 +160,11 @@ class HitGround(object):
     # 撞地
     def hit_the_ground(self):
         for army_index in range(1, 3):
-            self.army_expedition(config.leveling_land)
+            # 一是带撞地武将的
+            if army_index == 1:
+                self.army_expedition(config.leveling_land_help)
+            else:
+                self.army_expedition(config.leveling_land)
             print("判断武将灰度状态")
             if assistant.is_expedition_hero_even_gray(self.hwnd, army_index):
                 print("武将是灰色状态，无法出征")

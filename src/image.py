@@ -9,7 +9,7 @@ from PIL import ImageQt, Image
 from PyQt5.QtWidgets import QApplication
 
 import src.window as window
-import src.image_similar as image_similar
+import src.image_cosin as image_similar
 
 # 简体中文
 chinese = 'chi_sim'

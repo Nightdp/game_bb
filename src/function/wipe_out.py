@@ -117,8 +117,8 @@ class WipeOut(object):
         if assistant.is_city_hero_gray(self.hwnd, army_index):
             print("武将灰色状态不能征兵")
             return
-        if assistant.is_city_hero_conscription(self.hwnd, army_index):
-            print("武将正在征兵中")
+        if not assistant.is_city_army_enable_conscription(self.hwnd, army_index):
+            print("武将不可征兵状态")
             return
 
         print("点击武将队伍")
@@ -250,6 +250,11 @@ class WipeOut(object):
     def run(self):
 
         # self.init_wipe_out_land_info()
+
+        for i in range(0, 5):
+
+            if not assistant.is_city_army_enable_conscription(self.hwnd, i):
+                print("武将不可征兵状态")
 
         while True:
             # 征兵

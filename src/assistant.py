@@ -24,10 +24,38 @@ def is_expedition_hero_even_gray(hwnd, hero_index):
         image.image_grab(hwnd, position_util.top_right(position.expedition_army_even_rect_list[hero_index])))
 
 
-# 城池的武将是否征兵中（状态判断）
-def is_city_hero_conscription(hwnd, hero_index):
-    return image.is_image_similar(hwnd, '../res/conscription.png',
-                                  position_util.hero_status(position.city_army_list[hero_index])) > 0.85
+# 城池的武将队伍是否可征兵状态
+def is_city_army_enable_conscription(hwnd, army_index):
+    # 是否在征兵
+    is_conscription = image.is_image_similar(hwnd, '../res/conscription.png',
+                                             position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    # 是否在行军
+    is_march = image.is_image_similar(hwnd, '../res/march.png',
+                                      position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    # 是否在返回
+    is_return = image.is_image_similar(hwnd, '../res/return.png',
+                                       position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    # 是否在练兵
+    is_training = image.is_image_similar(hwnd, '../res/training.png',
+                                         position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    return not is_conscription and not is_march and not is_return and not is_training
+
+
+# 城池的武将队伍是否可配置武将状态
+def is_city_army_enable_setting(hwnd, army_index):
+    # 是否在征兵
+    is_conscription = image.is_image_similar(hwnd, '../res/conscription.png',
+                                             position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    # 是否在行军
+    is_march = image.is_image_similar(hwnd, '../res/march.png',
+                                      position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    # 是否在返回
+    is_return = image.is_image_similar(hwnd, '../res/return.png',
+                                       position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    # 是否在练兵
+    is_training = image.is_image_similar(hwnd, '../res/training.png',
+                                         position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    return not is_conscription and not is_march and not is_return and not is_training
 
 
 # 获取武将队伍页面的兵力

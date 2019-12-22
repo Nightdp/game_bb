@@ -76,8 +76,7 @@ def split_image(img, part_size=(64, 64)):
     w, h = img.size
     pw, ph = part_size
     assert w % pw == h % ph == 0
-    return [img.crop((i, j, i + pw, j + ph)).copy() for i in range(0, w, pw) \
-            for j in range(0, h, ph)]
+    return [img.crop((i, j, i + pw, j + ph)).copy() for i in range(0, w, pw) for j in range(0, h, ph)]
 
 
 # 融合相似度阈值
@@ -98,6 +97,7 @@ def calc_image_similarity(image_l, image_r):
         result = max_three_similarity
     else:
         result = min_three_similarity
+    print(round(result, 3))
     return round(result, 3)
 
 
