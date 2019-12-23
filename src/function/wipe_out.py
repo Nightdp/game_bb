@@ -251,13 +251,6 @@ class WipeOut(object):
 
         # self.init_wipe_out_land_info()
 
-        if assistant.is_conscription_button_gray(self.hwnd):
-            print("征兵按钮是灰色的")
-            event.click_outside(self.hwnd)
-            print("再次点击返回")
-            event.click_page_return(self.hwnd)
-            return
-
         while True:
             # 征兵
             self.conscription()
