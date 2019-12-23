@@ -46,5 +46,10 @@ def is_similar(str1, str2):
     return difflib.SequenceMatcher(None, str1, str2).quick_ratio() >= 0.01
 
 
+# 判断两字符是否很相似
+def is_most_similar(str1, str2):
+    return difflib.SequenceMatcher(None, str1, str2).quick_ratio() >= 0.85
+
+
 if __name__ == '__main__':
     print(is_similar("太史慈", "太史"))

@@ -159,9 +159,9 @@ class WipeOut(object):
             for index in range(0, 3):
                 event.click_hero_conscription_max(self.hwnd, index)
 
-            print("判断是否征兵队列已满")
-            if assistant.is_conscription_tip(self.hwnd):
-                print("征兵队列已满, 点击外部返回")
+            print("判断能否征兵")
+            if assistant.is_conscription_button_gray(self.hwnd):
+                print("征兵按钮是灰色的")
                 event.click_outside(self.hwnd)
                 print("再次点击返回")
                 event.click_page_return(self.hwnd)
@@ -250,6 +250,13 @@ class WipeOut(object):
     def run(self):
 
         # self.init_wipe_out_land_info()
+
+        if assistant.is_conscription_button_gray(self.hwnd):
+            print("征兵按钮是灰色的")
+            event.click_outside(self.hwnd)
+            print("再次点击返回")
+            event.click_page_return(self.hwnd)
+            return
 
         while True:
             # 征兵

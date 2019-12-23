@@ -90,11 +90,8 @@ def is_conscription_disable(hwnd):
 
 
 # 征兵队列已满
-def is_conscription_tip(hwnd):
-    return image.get_text_by_orc(hwnd, position.conscription_tip_rect, 120).find(
-        "预备兵") >= 0 or image.get_text_by_orc(hwnd, position.conscription_tip_rect, 120).find(
-        "兵力") >= 0 or image.get_text_by_orc(hwnd, position.conscription_tip_rect, 120).find(
-        "征兵") >= 0
+def is_conscription_button_gray(hwnd):
+    return image.is_gray_map(image.image_grab(hwnd, position.conscription_confirm_button_rect))
 
 
 # 当前部队处于非待命状态
