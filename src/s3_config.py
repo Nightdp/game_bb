@@ -10,7 +10,7 @@ wipe_out_location_dict = {
 }
 
 # 武将出征条件兵力阈值
-wipe_out_threshold_dict = [(20000, 6000),
+wipe_out_threshold_dict = [(19000, 6000),
                            (24000, 8000),
                            (22000, 8000),
                            (30000, 9000),

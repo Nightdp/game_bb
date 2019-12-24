@@ -206,3 +206,35 @@ def get_h_projection(image):
             h_projection[y, x] = 255
     cv2.imshow('hProjection2', h_projection)
     return h_
+
+
+# 获取红色文字内容（单行）
+def get_red_text_single_by_orc(hwnd, rect, lang, whitelist=''):
+    # 截图
+    image = image_grab(hwnd, rect)
+    image = image_convert_red_text(image)
+    # 图片识别
+    return pytesseract.image_to_string(image, lang=lang,
+                                       config='--psm 7 --oem 3 -c tessedit_char_whitelist=' + whitelist)
+
+
+# 将红色文字转成黑色，背景白色
+def image_convert_red_text(image):
+    # 长度
+    width = image.size[0]
+    # 宽度
+    height = image.size[1]
+    # 遍历所有长度的点
+    for i in range(0, width):
+        # 遍历所有宽度的点
+        for j in range(0, height):
+            # 打印该图片的所有点
+            data = (image.getpixel((i, j)))
+            # 红色R通道比GB通道大很多判断红色文字
+            if data[0] >= data[1] + data[2] and data[0] >= 80:
+                # 则这些像素点的颜色改成黑色
+                image.putpixel((i, j), (0, 0, 0, 255))
+            else:
+                # 则这些像素点的颜色改成白色
+                image.putpixel((i, j), (255, 255, 255, 255))
+    return image

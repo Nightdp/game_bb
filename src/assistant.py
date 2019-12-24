@@ -59,8 +59,8 @@ def is_city_army_enable_setting(hwnd, army_index):
 
 
 # 获取武将队伍页面的兵力
-def get_city_army_troops(hwnd):
-    return image.get_number_by_orc(hwnd, position.army_troops_rect, 160)
+def get_city_army_troops(hwnd, army_index):
+    return image.get_number_by_orc(hwnd, position_util.hero_troops(position.city_army_list[army_index]), 180)
 
 
 # 获取武将体力
@@ -79,9 +79,7 @@ def get_hero_conscription_duration(hwnd, hero_index):
 
 # 武将是否兵力足够
 def is_troops_enough(hwnd, hero_index):
-    return image.get_number_by_orc(hwnd, position_util.hero_troops(position.expedition_army_rect_list[
-                                                                       hero_index % len(
-                                                                           position.expedition_army_rect_list)]), 85)
+    return image.get_number_by_orc(hwnd, position_util.hero_troops(position.expedition_army_rect_list[hero_index]), 130)
 
 
 # 征兵不可用
@@ -216,3 +214,11 @@ def get_march_duration(hwnd):
 # 获取武将名称
 def get_hero_name(hwnd):
     return image.get_column_text_by_orc(hwnd, position.hero_name_rect, 120).replace(" ", "").replace("\n", "")
+
+
+# 获取等待时长（征兵，行军之类）
+def get_wait_duration(hwnd, army_index):
+    text = image.get_red_text_single_by_orc(hwnd, position_util.time_consuming(position.city_army_list[army_index]),
+                                            'eng', '0123456789:')
+    duration = string_util.get_time_by_string(text)
+    return duration

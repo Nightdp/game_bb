@@ -20,6 +20,14 @@ class WipeOut(object):
         # 土地的扫荡索引
         self.manor_index_list = [0, 0]
 
+        # 最短等待时间列表
+        self.min_wait_duration_list = [12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60]
+
+    # 重置数据
+    def reset_data(self):
+        self.army_troops_list = [0, 0, 0, 0, 0]
+        self.min_wait_duration_list = [12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60]
+
     # 定位跳转
     def location_jump(self, point):
         print("点击地图菜单")
@@ -113,6 +121,22 @@ class WipeOut(object):
 
     # 单个武将征兵
     def hero_conscription(self, army_index):
+
+        print("获取等待时间：")
+        wait_duration = assistant.get_wait_duration(self.hwnd, army_index)
+
+        self.army_troops_list[army_index] = assistant.get_city_army_troops(self.hwnd, army_index)
+        print("获取武将兵力数量：%d" % self.army_troops_list[army_index])
+
+        if self.army_troops_list[army_index] < config.wipe_out_threshold_dict[army_index][1] and \
+                assistant.is_city_army_enable_conscription(self.hwnd, army_index):
+            print("兵力不够，并且不在不可征兵状态，不计算等待时长")
+        else:
+            self.min_wait_duration_list[army_index] = wait_duration
+            print("兵力足够，设置等待时间，否则不计算")
+
+        print("最小等待时间：" + str(wait_duration) + "秒")
+
         print("判断武将是否是灰色状态：")
         if assistant.is_city_hero_gray(self.hwnd, army_index):
             print("武将灰色状态不能征兵")
@@ -123,9 +147,6 @@ class WipeOut(object):
 
         print("点击武将队伍")
         event.click_city_army(self.hwnd, army_index)
-
-        self.army_troops_list[army_index] = assistant.get_city_army_troops(self.hwnd)
-        print("获取武将兵力数量：%d" % self.army_troops_list[army_index])
 
         print("点击队伍 武将大营")
         event.click_army_hero(self.hwnd, 0)
@@ -142,7 +163,7 @@ class WipeOut(object):
         print("判断体力是否不太满：")
         # TODO 征兵逻辑待完善
 
-        if physical < 130 - 20:
+        if physical < 130 - 20 or self.army_troops_list[army_index] < config.wipe_out_threshold_dict[army_index][1]:
             print("体力不太满：")
 
             print("点击征兵按钮")
@@ -252,6 +273,10 @@ class WipeOut(object):
         # self.init_wipe_out_land_info()
 
         while True:
+
+            # 数据重置
+            self.reset_data()
+
             # 征兵
             self.conscription()
 
@@ -260,5 +285,5 @@ class WipeOut(object):
             for index in range(0, 5):
                 self.hero_wipe_out_analysis(index, self.army_troops_list[index])
 
-            print("睡眠7分钟")
-            time.sleep(20)
+            print("睡眠" + str(min(self.min_wait_duration_list)) + "秒")
+            time.sleep(max(min(self.min_wait_duration_list), 20))
