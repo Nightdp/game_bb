@@ -147,10 +147,10 @@ class HitGround(object):
     def tired_hero_replace(self):
 
         print("循环判断和替换")
-        for index in range(1, 3):
+        for index in range(3, 4):
             print("判断是否能配置武将状态")
             if assistant.is_city_army_enable_setting(self.hwnd, index):
-                self.tired_hero_replace_single(index, index == 1)
+                self.tired_hero_replace_single(index, index == 3)
             else:
                 print("武将队伍不能配置状态")
 
@@ -159,9 +159,9 @@ class HitGround(object):
 
     # 撞地
     def hit_the_ground(self):
-        for army_index in range(1, 3):
+        for army_index in range(3, 4):
             # 一是带撞地武将的
-            if army_index == 1:
+            if army_index == 3:
                 self.army_expedition(config.leveling_land_help)
             else:
                 self.army_expedition(config.leveling_land)
@@ -175,8 +175,6 @@ class HitGround(object):
                 event.click_expedition_army_even(self.hwnd, army_index)
                 print("武将开始出征了")
                 event.click_wipe_out_button(self.hwnd)
-                print("强行出征")
-                event.click_hero_force_expedition(self.hwnd)
                 time.sleep(2)
 
     # 运行
@@ -189,4 +187,4 @@ class HitGround(object):
             print("武将循环出征")
             self.hit_the_ground()
             print("睡眠等待下次循环")
-            time.sleep(30)
+            time.sleep(60)
