@@ -125,7 +125,7 @@ class GameAuxiliaries(object):
         window = tk.Tk()
         window.title("率土之滨辅助")
         window.geometry("500x300+1414+100")
-        start = tk.Button(window, text="开始", command=lambda: self.wipe_out())
+        start = tk.Button(window, text="开始", command=lambda: self.hit_ground())
         start.pack()
         window.mainloop()
 
