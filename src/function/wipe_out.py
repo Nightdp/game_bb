@@ -161,7 +161,7 @@ class WipeOut(object):
 
         log.info("判断体力是否不太满：")
 
-        if physical < 130 - 20 or self.army_troops_list[army_index] < config.wipe_out_threshold_dict[army_index][1]:
+        if physical < 130 - 110 or self.army_troops_list[army_index] < config.wipe_out_threshold_dict[army_index][1]:
             log.info("体力不太满：")
 
             log.info("点击征兵按钮")
