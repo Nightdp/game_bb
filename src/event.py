@@ -56,6 +56,12 @@ def click_city_army(hwnd, army_index):
     time.sleep(0.5)
 
 
+# 点击城池队伍头像（双数）
+def click_city_army_even(hwnd, army_index):
+    mouse.click(hwnd, position.city_army_even_list[army_index])
+    time.sleep(0.5)
+
+
 # 点击出征队伍头像
 def click_expedition_army(hwnd, army_index):
     mouse.click(hwnd, position.expedition_army_rect_list[army_index])

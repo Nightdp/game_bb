@@ -32,7 +32,7 @@ class HitGround(object):
     # 获取武将信息
     def init_army_hero_info(self, army_index):
         print("点击武将队伍")
-        event.click_city_army(self.hwnd, army_index)
+        event.click_city_army_even(self.hwnd, army_index)
 
         for i in range(2):
             print("点击队伍 武将大营")
@@ -166,13 +166,13 @@ class HitGround(object):
             else:
                 self.army_expedition(config.leveling_land)
             print("判断武将灰度状态")
-            if assistant.is_expedition_hero_even_gray(self.hwnd, army_index):
+            if assistant.is_expedition_hero_gray(self.hwnd, army_index):
                 print("武将是灰色状态，无法出征")
                 print("点击外部区域回到上一页")
                 event.click_outside(self.hwnd)
             else:
                 print("武将可以出征")
-                event.click_expedition_army_even(self.hwnd, army_index)
+                event.click_expedition_army(self.hwnd, army_index)
                 print("武将开始出征了")
                 event.click_wipe_out_button(self.hwnd)
                 time.sleep(2)
