@@ -20,6 +20,15 @@ wipe_out_menu_rect = (851, 333, 1048, 384)
 # 部队出征按钮
 army_expedition_menu_rect = (850, 398, 1048, 448)
 
+# 标记定位菜单标题
+mark_location_menu_title_rect = (1026, 98, 1332, 136)
+
+# 定位确认
+location_icon_rect = (658, 449, 687, 477)
+
+# 部队总览
+army_overview_button_rect = (1232, 762, 1396, 808)
+
 # 5武将，武将1
 hero_1_rect = (121, 548, 318, 664)
 # 5武将，武将2

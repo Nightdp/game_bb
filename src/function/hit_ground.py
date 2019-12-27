@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import src.assistant as assistant
-import src.event as event
+import src.assert_event as event
 import src.s3_config as config
 import src.time as time
 import src.util as util
@@ -187,4 +187,4 @@ class HitGround(object):
             print("武将循环出征")
             self.hit_the_ground()
             print("睡眠等待下次循环")
-            time.sleep(60)
+            time.sleep(2 * 60)
