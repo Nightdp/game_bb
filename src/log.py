@@ -47,7 +47,7 @@ class Logger(object):
         self.logger.addHandler(th)
 
 
-log = Logger('../logs/all.logs', level='debug')
+log = Logger('../logs/all.log', level='debug')
 
 
 # 日志打印
@@ -56,10 +56,10 @@ def info(*args):
 
 
 if __name__ == '__main__':
-    log = Logger('../logs/all.logs', level='debug')
+    log = Logger('../logs/all.log', level='debug')
     log.logger.debug('debug')
     log.logger.info('info')
     log.logger.warning('警告')
     log.logger.error('报错')
     log.logger.critical('严重')
-    Logger('../logs/error.logs', level='error').logger.error('error')
+    Logger('../logs/error.log', level='error').logger.error('error')

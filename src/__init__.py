@@ -131,5 +131,10 @@ class GameAuxiliaries(object):
 
 
 if __name__ == '__main__':
+    try:
+        file = open('../logs/all.log', 'w')
+        file.write('')
+    except FileNotFoundError:
+        print('无需清理日志文件')
     ga = GameAuxiliaries()
     ga.run()
