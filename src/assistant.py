@@ -222,3 +222,12 @@ def get_wait_duration(hwnd, army_index):
                                             'eng', '0123456789:')
     duration = string_util.get_time_by_string(text)
     return duration
+
+
+# 获取等待时长（征兵，行军之类）
+def get_wait_duration_even(hwnd, army_index):
+    text = image.get_red_text_single_by_orc(hwnd,
+                                            position_util.time_consuming(position.city_army_even_list[army_index]),
+                                            'eng', '0123456789:')
+    duration = string_util.get_time_by_string(text)
+    return duration

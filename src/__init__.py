@@ -19,6 +19,7 @@ import src.path as path
 from src.function.hit_ground import HitGround
 from src.function.wipe_out import WipeOut
 from src.function.paving import Paving
+from src.function.explore import Explore
 
 
 class GameAuxiliaries(object):
@@ -120,12 +121,17 @@ class GameAuxiliaries(object):
         wo = WipeOut(self.hwnd)
         wo.run()
 
+    # 探索土地信息
+    def explore(self):
+        wo = Explore(self.hwnd)
+        wo.run()
+
     # 创建GUI
     def run(self):
         window = tk.Tk()
         window.title("率土之滨辅助")
         window.geometry("500x300+1414+100")
-        start = tk.Button(window, text="开始", command=lambda: self.hit_ground())
+        start = tk.Button(window, text="开始", command=lambda: self.explore())
         start.pack()
         window.mainloop()
 
@@ -134,6 +140,7 @@ if __name__ == '__main__':
     try:
         file = open('../logs/all.log', 'w')
         file.write('')
+        file.close()
     except FileNotFoundError:
         print('无需清理日志文件')
     ga = GameAuxiliaries()

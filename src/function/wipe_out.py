@@ -283,5 +283,11 @@ class WipeOut(object):
             for index in range(0, 5):
                 self.hero_wipe_out_analysis(index, self.army_troops_list[index])
 
-            log.info("睡眠" + str(min(self.min_wait_duration_list)) + "秒")
-            time.sleep(max(min(self.min_wait_duration_list), 20))
+            min_value = min(self.min_wait_duration_list)
+            if min_value == 12 * 60 * 60:
+                sleep_duration = 20
+            else:
+                sleep_duration = max(min_value, 20)
+
+            log.info("睡眠" + str(sleep_duration) + "秒")
+            time.sleep(sleep_duration)

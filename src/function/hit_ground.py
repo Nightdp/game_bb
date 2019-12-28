@@ -38,18 +38,13 @@ class HitGround(object):
         event.click_location_jump_button(self.hwnd)
 
     # 获取武将信息
-    # army_index：部队索引
+    # army_index：部队索引（主城）
     def init_army_hero_info(self, army_index):
 
         log.info("获取等待时间：")
-        wait_duration = assistant.get_wait_duration(self.hwnd, army_index)
+        wait_duration = assistant.get_wait_duration_even(self.hwnd, army_index)
 
-        if assistant.is_city_army_enable_conscription(self.hwnd, army_index):
-            log.info("兵力不够，并且不在不可征兵状态，不计算等待时长")
-        else:
-            self.min_wait_duration_list[army_index] = wait_duration
-            log.info("兵力足够，设置等待时间，否则不计算")
-
+        self.min_wait_duration_list[army_index] = wait_duration
         log.info("最小等待时间：" + str(wait_duration) + "秒")
 
         log.info("点击武将队伍：第 %d 个部队" % army_index)
@@ -224,4 +219,4 @@ class HitGround(object):
             log.info("武将循环出征")
             self.hit_the_ground()
             log.info("睡眠" + str(max(min(self.min_wait_duration_list), 20)) + "秒")
-            time.sleep(max(min(self.min_wait_duration_list), 20))
+            time.sleep(3 * 60)
