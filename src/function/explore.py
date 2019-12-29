@@ -39,8 +39,8 @@ class Explore(object):
     # 运行
     def run(self):
         self.init_db()
-        land_width = 31
-        land_height = 31
+        land_width = 35
+        land_height = 35
         log.info("开始探索：宽->" + str(land_width) + "块  长->" + str(land_height) + "块：")
         is_first_jump = True
         for x in range(config.main_city_location[0] - land_width, config.main_city_location[0] + land_width + 1):
