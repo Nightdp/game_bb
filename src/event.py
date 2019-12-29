@@ -9,6 +9,11 @@ import src.window as window
 import src.const as const
 
 
+# 设置窗口标题
+def set_title(hwnd, number):
+    keyboard.set_text(hwnd, "率土之滨" + str(number))
+
+
 def click(hwnd, rect):
     mouse.click(hwnd, rect)
     time.sleep(1)

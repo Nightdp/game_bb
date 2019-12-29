@@ -170,9 +170,9 @@ def location_input(hwnd, point):
 
 
 # 坐标跳转按钮
-def click_location_jump_button(hwnd):
+def click_location_jump_button(hwnd, duration=2):
     mouse.click(hwnd, position.location_jump_rect)
-    time.sleep(2)
+    time.sleep(duration)
 
 
 # 点击扫荡菜单按钮

@@ -124,7 +124,7 @@ def get_one_page_land_location_list(hwnd):
 
 
 # 获取土地信息
-def get_land_info(hwnd):
+def get_land_info_simple(hwnd):
     text = image.get_multi_text(hwnd, position.center_land_info_rect, lang=image.chinese, threshold=100,
                                 whitelist='')
     split = text.split('\n')
@@ -136,6 +136,49 @@ def get_land_info(hwnd):
         if len(split[i]) == 0:
             split.pop(i)
     return split
+
+
+# 获取土地信息
+def get_land_info(hwnd):
+    img = image.image_grab(hwnd, position.center_land_info_rect)
+    img = image.get_h_projection(img)
+    text = image.get_image_text_by_orc(img)
+    split = text.split('\n')
+    # 循环移除前后无效字符
+    for i in range(len(split)):
+        split[i] = split[i].strip()
+    # 倒序移除无用数据
+    for i in range(len(split) - 1, -1, -1):
+        if len(split[i]) == 0:
+            split.pop(i)
+    return split
+
+
+def is_color_land(img, low, high):
+    width, height = img.size
+    # 遍历所有长度的点
+    all_in = True
+    for i in range(0, width):
+        # 遍历所有宽度的点
+        for j in range(0, height):
+            # 打印该图片的所有点
+            data = (img.getpixel((i, j)))
+            print(data)
+            if not (data[0] in range(low[0], high[0]) and data[1] in range(low[1], high[1])
+                    and data[2] in range(low[2], high[2])):
+                all_in = False
+                break
+        if not all_in:
+            break
+    return all_in
+
+
+# 获取土地友好性
+def get_land_friendly(hwnd):
+    img = image.image_grab(hwnd, position.center_land_bottom_rect)
+    img.show()
+    is_green = is_color_land(img, (148, 180, 80), (172, 200, 120))
+    print("绿色：" + str(is_green))
 
 
 # 获取土地等级
@@ -231,3 +274,7 @@ def get_wait_duration_even(hwnd, army_index):
                                             'eng', '0123456789:')
     duration = string_util.get_time_by_string(text)
     return duration
+
+
+def test(hwnd):
+    image.test_image_grab(hwnd, position.center_land_info_rect)

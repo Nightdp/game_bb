@@ -25,3 +25,8 @@ def up_key(hwnd, key):
 def type_string(hwnd, text):
     for item in text:
         win32api.SendMessage(hwnd, win32con.WM_CHAR, ord(item), 0)
+
+
+# 设置标题
+def set_text(hwnd, text):
+    win32api.SendMessage(hwnd, win32con.WM_SETTEXT, 0, text)

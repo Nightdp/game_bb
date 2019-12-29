@@ -112,6 +112,11 @@ def get_text_by_orc(hwnd, rect, threshold):
     return pytesseract.image_to_string(image, lang='chi_sim', config='--psm 7')
 
 
+# 图片文字识别
+def get_image_text_by_orc(image):
+    return pytesseract.image_to_string(image, lang='chi_sim', config='--psm 1')
+
+
 # 获取指定区域内的文字内容：中文内容，一列
 def get_column_text_by_orc(hwnd, rect, threshold):
     # 截图
@@ -186,10 +191,11 @@ def get_single_line_text(hwnd, rect, lang, threshold, threshold_max=None, whitel
 def get_h_projection(image):
     # IPL Image转灰度cv2
     gray = cv2.cvtColor(np.asarray(image), cv2.COLOR_RGB2GRAY)
-    cv2.imshow('gray', gray)
+    # cv2.imshow('gray', gray)
     # 二值化
-    ret, binary = cv2.threshold(gray, 72, 255, cv2.THRESH_BINARY)
-    cv2.imshow('binary', binary)
+    ret, binary = cv2.threshold(gray, 130, 255, cv2.THRESH_BINARY)
+    ret_back, binary_back = cv2.threshold(gray, 130, 255, cv2.THRESH_BINARY_INV)
+    # cv2.imshow('binary', binary)
     h_projection = np.zeros(binary.shape, np.uint8)
     # 图像高与宽
     (h, w) = binary.shape
@@ -204,8 +210,24 @@ def get_h_projection(image):
     for y in range(h):
         for x in range(h_[y]):
             h_projection[y, x] = 255
-    cv2.imshow('hProjection2', h_projection)
-    return h_
+    # cv2.imshow('hProjection2', h_projection)
+    start = 0
+    h_start = []
+    h_end = []
+    # 根据水平投影获取垂直分割位置
+    for i in range(len(h_)):
+        if h_[i] > 20 and start == 0:
+            h_start.append(i)
+            start = 1
+        if h_[i] <= 20 and start == 1:
+            h_end.append(i)
+            start = 0
+    h_end.append(len(h_) - 1)
+    # 分割行，分割之后再进行列分割并保存分割位置
+    # 获取行图像
+    crop_image = binary_back[h_end[0]:h_start[len(h_start) - 1], 0:w]
+    # cv2.imshow('cropImg', crop_image)
+    return Image.fromarray(cv2.cvtColor(crop_image, cv2.COLOR_BGR2RGB))
 
 
 # 获取红色文字内容（单行）
@@ -238,3 +260,8 @@ def image_convert_red_text(image):
                 # 则这些像素点的颜色改成白色
                 image.putpixel((i, j), (255, 255, 255, 255))
     return image
+
+
+def test_image_grab(hwnd, rect):
+    image = image_grab(hwnd, rect)
+    image.show()

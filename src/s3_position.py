@@ -175,3 +175,6 @@ hero_name_rect = (152, 190, 186, 330)
 
 # 强行出征
 hero_force_expedition_rect = (802, 652, 975, 707)
+
+# 土地底部
+center_land_bottom_rect = (704, 526, 708, 530)

@@ -51,5 +51,13 @@ def is_most_similar(str1, str2):
     return difflib.SequenceMatcher(None, str1, str2).quick_ratio() >= 0.85
 
 
+# 获取资源名
+def get_resource_name(text_list):
+    for i in text_list:
+        for j in const.resource_name_list:
+            if i.find(j) >= 0:
+                return j
+
+
 if __name__ == '__main__':
     print(is_similar("太史慈", "太史"))
