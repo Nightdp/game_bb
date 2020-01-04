@@ -25,7 +25,7 @@ from src.function.explore import Explore
 class GameAuxiliaries(object):
 
     def __init__(self):
-        self.wd_name = u'[#] 率土之滨 [#]'
+        self.wd_name = u'率土之滨'
         self.mouse = PyMouse()
         self.keyboard = PyKeyboard()
 
@@ -131,7 +131,7 @@ class GameAuxiliaries(object):
         window = tk.Tk()
         window.title(self.wd_name + "辅助")
         window.geometry("500x300+1414+100")
-        start = tk.Button(window, text="开始", command=lambda: self.explore())
+        start = tk.Button(window, text="开始", command=lambda: self.wipe_out())
         start.pack()
         window.mainloop()
 

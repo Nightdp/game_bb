@@ -116,7 +116,7 @@ center_land_level_rect = (650, 276, 706, 306)
 center_land_info_rect = (348, 255, 555, 590)
 
 # 土地列表位置
-land_list_location_rect = (530, 201, 660, 786)
+land_list_location_rect = (527, 201, 660, 786)
 
 # 土地统计列表左右位置
 land_statistics_left_list = (930, 212, 1110, 775)

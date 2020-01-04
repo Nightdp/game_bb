@@ -22,12 +22,12 @@ class WipeOut(object):
         self.manor_index_list = [0, 0]
 
         # 最短等待时间列表
-        self.min_wait_duration_list = [12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60]
+        self.min_wait_duration_list = [12 * 50 * 50, 12 * 50 * 50, 12 * 50 * 50, 12 * 50 * 50, 12 * 50 * 50]
 
     # 重置数据
     def reset_data(self):
         self.army_troops_list = [0, 0, 0, 0, 0]
-        self.min_wait_duration_list = [12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60, 12 * 60 * 60]
+        self.min_wait_duration_list = [12 * 50 * 50, 12 * 50 * 50, 12 * 50 * 50, 12 * 50 * 50, 12 * 50 * 50]
 
     # 定位跳转
     def location_jump(self, point):
@@ -69,9 +69,9 @@ class WipeOut(object):
                 break
 
         if enable_index >= 0:
-            log.info("有能战胜的土地：%d 级地" % (6 - enable_index))
+            log.info("有能战胜的土地：%d 级地" % (5 - enable_index))
             log.info("寻找合适的土地：")
-            manor_list = config.wipe_out_location_dict["manor_%d" % (6 - enable_index)]
+            manor_list = config.wipe_out_location_dict["manor_%d" % (5 - enable_index)]
             manor_index = self.manor_index_list[enable_index]
             point = manor_list[manor_index]
             log.info("合适的土地坐标：" + str(point))
@@ -109,7 +109,7 @@ class WipeOut(object):
 
         log.info("最大征兵时长：%d" % max_duration)
         # 可用时长，即体力满之前的时长
-        enable_duration = (130 - physical) * 60 * 60 / 20
+        enable_duration = (130 - physical) * 50 * 50 / 20
         log.info("可用征兵时长：%d" % enable_duration)
         # 总时长
         if max_duration > enable_duration and max_duration != 0:
@@ -211,14 +211,13 @@ class WipeOut(object):
         event.click_city_menu(self.hwnd)
 
         # 遍历武将征兵
-        for index in range(0, 5):
+        for index in range(0, config.army_count):
             self.hero_conscription(index)
 
         log.info("返回上一页")
         event.click_page_return(self.hwnd)
 
-        # 获取坐标列表
-
+    # 获取坐标列表
     def get_location_list(self):
         location_list = set()
         while True:
@@ -240,10 +239,10 @@ class WipeOut(object):
         event.reset_land_option(self.hwnd)
         log.info("选择图地选项")
         event.click(self.hwnd, assistant.get_land_option_rect(self.hwnd, level))
-        log.info("获取所有土地坐标")
         location_list = self.get_location_list()
+        log.info("获取所有土地坐标" + str(location_list))
         log.info("筛选合适的土地出征列表")
-        wipe_out_land_list = util.calc_best_march_duration((201, 1442), location_list, 118)
+        wipe_out_land_list = util.calc_best_march_duration((1080, 1376), location_list, 118)
         log.info("移除最后一个")
         wipe_out_land_list.pop(len(wipe_out_land_list) - 1)
         log.info(wipe_out_land_list)
@@ -258,7 +257,7 @@ class WipeOut(object):
         log.info("重置土地统计选项")
         event.reset_land_option(self.hwnd)
 
-        self.init_wipe_out_land_by_level(6)
+        self.init_wipe_out_land_by_level(4)
         self.init_wipe_out_land_by_level(5)
 
         log.info("返回上一页")
@@ -268,7 +267,7 @@ class WipeOut(object):
 
     def run(self):
 
-        # self.init_wipe_out_land_info()
+        self.init_wipe_out_land_info()
 
         while True:
 
@@ -280,11 +279,11 @@ class WipeOut(object):
 
             log.info(self.army_troops_list)
 
-            for index in range(0, 5):
+            for index in range(0, config.army_count):
                 self.hero_wipe_out_analysis(index, self.army_troops_list[index])
 
             min_value = min(self.min_wait_duration_list)
-            if min_value == 12 * 60 * 60:
+            if min_value == 12 * 50 * 50:
                 sleep_duration = 20
             else:
                 sleep_duration = max(min_value, 20)

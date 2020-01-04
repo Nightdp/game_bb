@@ -38,7 +38,13 @@ def is_city_army_enable_conscription(hwnd, army_index):
     # 是否在练兵
     is_training = image.is_image_similar(hwnd, '../res/training.png',
                                          position_util.hero_status(position.city_army_list[army_index])) > 0.975
-    return not is_conscription and not is_march and not is_return and not is_training
+    # 是否在战斗
+    is_fight = image.is_image_similar(hwnd, '../res/fight.png',
+                                      position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    # 是否在屯田
+    is_add_res = image.is_image_similar(hwnd, '../res/add_res.png',
+                                        position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    return not is_conscription and not is_march and not is_return and not is_training and not is_fight and not is_add_res
 
 
 # 城池的武将队伍是否可配置武将状态
@@ -55,7 +61,13 @@ def is_city_army_enable_setting(hwnd, army_index):
     # 是否在练兵
     is_training = image.is_image_similar(hwnd, '../res/training.png',
                                          position_util.hero_status(position.city_army_list[army_index])) > 0.975
-    return not is_conscription and not is_march and not is_return and not is_training
+    # 是否在战斗
+    is_fight = image.is_image_similar(hwnd, '../res/fight.png',
+                                      position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    # 是否在屯田
+    is_add_res = image.is_image_similar(hwnd, '../res/add_res.png',
+                                        position_util.hero_status(position.city_army_list[army_index])) > 0.975
+    return not is_conscription and not is_march and not is_return and not is_training and not is_fight and not is_add_res
 
 
 # 获取武将队伍页面的兵力
@@ -232,7 +244,7 @@ def get_land_option_side_rect(hwnd, level, left):
     # 寻找
     target_index = -1
     for i in range(len(option_list)):
-        if option_list[i].find('领地Lv.%d' % level) >= 0:
+        if option_list[i].upper().find('领地LV.%d' % level) >= 0:
             target_index = i
             break
     if target_index < 0:
