@@ -52,7 +52,7 @@ def click_mark_location_main_city(hwnd):
 # 点击城市菜单进入城池部队页面
 def click_city_menu(hwnd):
     mouse.click(hwnd, position.city_menu_rect)
-    time.sleep(1.5)
+    time.sleep(2)
 
 
 # 点击城池队伍头像

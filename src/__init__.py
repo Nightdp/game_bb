@@ -5,6 +5,7 @@ import tkinter as tk
 
 import src.util as util
 
+import threading
 import win32api
 import win32con
 import win32gui
@@ -20,6 +21,7 @@ from src.function.hit_ground import HitGround
 from src.function.wipe_out import WipeOut
 from src.function.paving import Paving
 from src.function.explore import Explore
+import src.thread_util as thread_util
 
 
 class GameAuxiliaries(object):
@@ -57,6 +59,8 @@ class GameAuxiliaries(object):
         self.center_y = int((self.bottom + self.top) / 2)
         print("窗口宽：%s" % (self.right - self.left))
         print("窗口高：%s" % (self.bottom - self.top))
+
+        self.thread_start = None
 
     # 获取坐标列表
     def get_location_list(self):
@@ -121,6 +125,11 @@ class GameAuxiliaries(object):
         wo = WipeOut(self.hwnd)
         wo.run()
 
+    def run_thread(self):
+        self.thread_start = threading.Thread(target=lambda: self.wipe_out())
+        self.thread_start.setDaemon(True)
+        self.thread_start.start()
+
     # 探索土地信息
     def explore(self):
         wo = Explore(self.hwnd)
@@ -131,8 +140,10 @@ class GameAuxiliaries(object):
         window = tk.Tk()
         window.title(self.wd_name + "辅助")
         window.geometry("500x300+1414+100")
-        start = tk.Button(window, text="开始", command=lambda: self.wipe_out())
+        start = tk.Button(window, text="开始", command=lambda: self.run_thread())
         start.pack()
+        end = tk.Button(window, text="结束", command=lambda: thread_util.stop_thread(self.thread_start))
+        end.pack(side='bottom')
         window.mainloop()
 
 
