@@ -126,7 +126,7 @@ class GameAuxiliaries(object):
         wo.run()
 
     def run_thread(self):
-        self.thread_start = threading.Thread(target=lambda: self.wipe_out())
+        self.thread_start = threading.Thread(target=lambda: self.paving())
         self.thread_start.setDaemon(True)
         self.thread_start.start()
 

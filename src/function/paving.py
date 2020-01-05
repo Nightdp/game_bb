@@ -4,6 +4,7 @@ import src.assistant as assistant
 import src.event as event
 import src.path as path
 import src.time as time
+from src.db_manager import DBManager
 
 
 # 铺路模块
@@ -12,6 +13,7 @@ class Paving(object):
 
     def __init__(self, hwnd):
         self.hwnd = hwnd
+        self.db = DBManager()
 
     # 选择部队
     def choose_army(self):
@@ -60,21 +62,31 @@ class Paving(object):
         min_level = 10
         fit_location = None
         for location in next_location:
-            print("土地：" + str(location))
-            self.location_jump(location)
-            print("点击土地")
-            event.click_center(self.hwnd)
-            print("识别土地等级")
-            land_level = assistant.get_land_level(self.hwnd)
-            print("等级：%d" % land_level)
+            print("从数据库中读取数据：")
+            land_info = self.db.get_land_info(location)
+            # 有该信息，并且土地信息等级不等于0
+            if land_info is not None:
+                if land_info['land_level'] == 0:
+                    land_level = 10
+                else:
+                    land_level = land_info['land_level']
+            else:
+                print("土地：" + str(location))
+                self.location_jump(location)
+                print("点击土地")
+                event.click_center(self.hwnd)
+                print("识别土地等级")
+                land_level = assistant.get_land_level(self.hwnd)
+                print("等级：%d" % land_level)
+            # 判断最小的土地等级
             if min_level > land_level:
                 min_level = land_level
                 fit_location = location
         return fit_location
 
     def run(self):
-        start = (202, 1443)
-        end = (206, 1444)
+        start = (1092, 1377)
+        end = (1103, 1384)
         while start != end:
             temp = self.occupy_next_land(start, end)
             print("武将出征")
