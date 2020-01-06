@@ -43,7 +43,7 @@ def click_map_menu(hwnd):
 # 点击标记定位->主城
 def click_mark_location_main_city(hwnd):
     mouse.click(hwnd, position.mark_location_menu_main_city_rect)
-    time.sleep(0.5)
+    time.sleep(2)
     assert_right.assert_click_mark_location_main_city(hwnd)
 
 

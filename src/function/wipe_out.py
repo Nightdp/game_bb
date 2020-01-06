@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import src.assistant as assistant
-import src.event as event
+import src.assert_event as event
 import src.s3_config as config
 import src.time as time
 import src.util as util
@@ -69,9 +69,9 @@ class WipeOut(object):
                 break
 
         if enable_index >= 0:
-            log.info("有能战胜的土地：%d 级地" % (5 - enable_index))
+            log.info("有能战胜的土地：%d 级地" % (6 - enable_index))
             log.info("寻找合适的土地：")
-            manor_list = config.wipe_out_location_dict["manor_%d" % (5 - enable_index)]
+            manor_list = config.wipe_out_location_dict["manor_%d" % (6 - enable_index)]
             manor_index = self.manor_index_list[enable_index]
             point = manor_list[manor_index]
             log.info("合适的土地坐标：" + str(point))
@@ -257,7 +257,7 @@ class WipeOut(object):
         log.info("重置土地统计选项")
         event.reset_land_option(self.hwnd)
 
-        self.init_wipe_out_land_by_level(4)
+        self.init_wipe_out_land_by_level(6)
         self.init_wipe_out_land_by_level(5)
 
         log.info("返回上一页")
@@ -267,7 +267,7 @@ class WipeOut(object):
 
     def run(self):
 
-        self.init_wipe_out_land_info()
+        # self.init_wipe_out_land_info()
 
         while True:
 
