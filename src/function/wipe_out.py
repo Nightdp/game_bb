@@ -89,7 +89,8 @@ class WipeOut(object):
                 event.click_expedition_army(self.hwnd, hero_index)
                 log.info("武将开始出征了")
                 event.click_wipe_out_button(self.hwnd)
-                self.manor_index_list[enable_index] = (self.manor_index_list[enable_index] + 1) % len(manor_dict)
+                self.manor_index_list[enable_index] = (self.manor_index_list[enable_index] + 1) % len(
+                    config.wipe_out_location_dict["manor_%d" % (6 - enable_index)])
                 time.sleep(2)
         else:
             log.info("没有能战胜的土地")
@@ -238,14 +239,18 @@ class WipeOut(object):
         log.info("重置土地统计选项")
         event.reset_land_option(self.hwnd)
         log.info("选择图地选项")
-        event.click(self.hwnd, assistant.get_land_option_rect(self.hwnd, level))
+        rect = assistant.get_land_option_rect(self.hwnd, level)
+        if rect is None:
+            log.info("无" + str(level) + "级地")
+            return
+        event.click(self.hwnd, rect)
         location_list = self.get_location_list()
         log.info("获取所有土地坐标" + str(location_list))
+        log.info("移除主城坐标")
+        location_list.remove(config.main_city_location)
         log.info("筛选合适的土地出征列表")
-        wipe_out_land_list = util.calc_best_march_duration((1080, 1376), location_list, 118)
-        log.info("移除最后一个")
-        wipe_out_land_list.pop(len(wipe_out_land_list) - 1)
-        log.info(wipe_out_land_list)
+        wipe_out_land_list = util.calc_best_march_duration(config.main_city_location, location_list, 118)
+        log.info(str(level) + "级地：" + str(wipe_out_land_list))
         config.wipe_out_location_dict['manor_%d' % level] = wipe_out_land_list
 
     # 初始化扫荡信息
@@ -257,8 +262,8 @@ class WipeOut(object):
         log.info("重置土地统计选项")
         event.reset_land_option(self.hwnd)
 
-        self.init_wipe_out_land_by_level(6)
-        self.init_wipe_out_land_by_level(5)
+        for index in range(1, 10):
+            self.init_wipe_out_land_by_level(index)
 
         log.info("返回上一页")
         event.click_page_close(self.hwnd)
@@ -267,7 +272,7 @@ class WipeOut(object):
 
     def run(self):
 
-        # self.init_wipe_out_land_info()
+        self.init_wipe_out_land_info()
 
         while True:
 

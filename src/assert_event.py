@@ -207,7 +207,7 @@ def scroll_one_page(hwnd):
 # 重置土地统计选项
 def reset_land_option(hwnd):
     mouse.click(hwnd, position.land_option_all_rect)
-    time.sleep(0.5)
+    time.sleep(1)
     mouse.click(hwnd, position.land_option_all_rect)
     time.sleep(1)
 

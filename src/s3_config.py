@@ -47,4 +47,4 @@ leveling_land_help = (1082, 1378)
 leveling_land = (1082, 1376)
 
 # 主城坐标
-main_city_location = (1080, 1376)
+main_city_location = (201, 1442)

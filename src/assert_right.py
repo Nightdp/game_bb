@@ -11,7 +11,7 @@ import src.util as util
 def assert_click_mark_location_menu(hwnd):
     text = image.get_text_by_orc(hwnd, position.mark_location_menu_title_rect, 120)
     assert util.is_most_similar('标记定位', text)
-
+    
 
 # 确认 -> 点击标记定位->主城
 def assert_click_mark_location_main_city(hwnd):
