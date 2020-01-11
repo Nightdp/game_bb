@@ -195,7 +195,7 @@ def get_land_friendly(hwnd):
 
 # 获取土地等级
 def get_land_level(hwnd):
-    text = image.get_single_line_text(hwnd, position.center_land_level_rect, lang=image.chinese, threshold=150,
+    text = image.get_single_line_text(hwnd, position.center_land_level_rect, lang=image.chinese, threshold=120,
                                       whitelist='Lv.123456789')
     text = text.strip().replace(" ", "")
     index = text.find('Lv.')
@@ -204,6 +204,18 @@ def get_land_level(hwnd):
         if number.isdigit():
             return int(number)
     return 0
+
+
+# 获取主城坐标
+def get_main_city_location(hwnd):
+    text = image.get_single_line_text(hwnd, position.main_city_location_rect, lang=image.chinese, threshold=200,
+                                      whitelist='(),0123456789')
+    text = text.strip()
+    split = text.replace("(", "").replace(")", "").split(",")
+    if len(split) == 2:
+        return int(split[0]), int(split[1])
+    else:
+        return None
 
 
 # 获取土地统计信息列表

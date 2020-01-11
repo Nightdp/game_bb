@@ -39,15 +39,15 @@ class Explore(object):
     # 运行
     def run(self):
         self.init_db()
-        land_width = 35
-        land_height = 35
+        land_width = 10
+        land_height = 10
         log.info("开始探索：宽->" + str(land_width) + "块  长->" + str(land_height) + "块：")
         is_first_jump = True
         for x in range(config.main_city_location[0] - land_width, config.main_city_location[0] + land_width + 1):
             for y in range(config.main_city_location[1] - land_height, config.main_city_location[1] + land_height + 1):
                 # 跳过已经存在的
                 item = self.map_info_dao.find_one({"x": x, "y": y})
-                if item is not None:
+                if item is not None and item['land_level'] > 0:
                     log.info(str(item) + "  已存在")
                     continue
                 log.info("位置定位：" + str((x, y)))

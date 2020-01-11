@@ -112,6 +112,9 @@ center_land_rect = (663, 378, 754, 469)
 # 中心土地的等级
 center_land_level_rect = (650, 276, 706, 306)
 
+# 主城坐标位置
+main_city_location_rect = (1072, 170, 1186, 200)
+
 # 土地信息
 center_land_info_rect = (348, 255, 555, 590)
 

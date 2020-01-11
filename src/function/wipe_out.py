@@ -19,7 +19,7 @@ class WipeOut(object):
         self.army_troops_list = [0, 0, 0, 0, 0]
 
         # 土地的扫荡索引
-        self.manor_index_list = [0, 0]
+        self.manor_index_list = [0, 0, 0, 0, 0, 0]
 
         # 最短等待时间列表
         self.min_wait_duration_list = [12 * 50 * 50, 12 * 50 * 50, 12 * 50 * 50, 12 * 50 * 50, 12 * 50 * 50]
@@ -55,13 +55,13 @@ class WipeOut(object):
     def is_enable_wipe_out(self, hero_index, manor_index, troops):
         threshold = config.wipe_out_threshold_dict[hero_index][manor_index]
         log.info("推荐兵力：{threshold}，当前兵力：{troops}".format(threshold=str(threshold), troops=str(troops)))
-        return threshold <= troops
+        return threshold <= troops and threshold != 0
 
     # 武将扫荡分析
     def hero_wipe_out_analysis(self, hero_index, troops):
         manor_dict = config.wipe_out_threshold_dict[hero_index]
         enable_index = -1
-        for index in range(0, 2):
+        for index in range(0, len(config.wipe_out_threshold_dict)):
             if manor_dict[index] <= troops:
                 log.info(manor_dict[index])
                 log.info(troops)
@@ -69,9 +69,10 @@ class WipeOut(object):
                 break
 
         if enable_index >= 0:
-            log.info("有能战胜的土地：%d 级地" % (6 - enable_index))
+            log.info("有能战胜的土地：%d 级地" % (len(config.wipe_out_threshold_dict) - enable_index))
             log.info("寻找合适的土地：")
-            manor_list = config.wipe_out_location_dict["manor_%d" % (6 - enable_index)]
+            manor_list = config.wipe_out_location_dict[
+                "manor_%d" % (len(config.wipe_out_threshold_dict) - enable_index)]
             manor_index = self.manor_index_list[enable_index]
             point = manor_list[manor_index]
             log.info("合适的土地坐标：" + str(point))
@@ -90,7 +91,7 @@ class WipeOut(object):
                 log.info("武将开始出征了")
                 event.click_wipe_out_button(self.hwnd)
                 self.manor_index_list[enable_index] = (self.manor_index_list[enable_index] + 1) % len(
-                    config.wipe_out_location_dict["manor_%d" % (6 - enable_index)])
+                    config.wipe_out_location_dict["manor_%d" % (len(config.wipe_out_threshold_dict) - enable_index)])
                 time.sleep(2)
         else:
             log.info("没有能战胜的土地")
@@ -270,7 +271,20 @@ class WipeOut(object):
         log.info("返回上一页")
         event.click_page_return(self.hwnd)
 
+    # 获取主城坐标
+    def init_main_city_location(self):
+
+        log.info("点击标记定位菜单")
+        event.click_mark_location_menu(self.hwnd)
+        log.info("点击主城项")
+        event.click_mark_location_main_city(self.hwnd)
+        location = assistant.get_main_city_location(self.hwnd)
+        log.info("获取主城坐标：" + str(location))
+        config.main_city_location = location
+
     def run(self):
+
+        self.init_main_city_location()
 
         self.init_wipe_out_land_info()
 
